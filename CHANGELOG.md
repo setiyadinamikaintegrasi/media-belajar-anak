@@ -64,7 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Synced the template P0 monorepo runtime fixes, removed the temporary component
   caller, made empty optional Node.js categories skip explicitly, installed the
   pinned Go linter in CI, and added behavioral backend coverage at the unchanged
-  80% threshold for hosted-runner revalidation.
+  80% threshold; hosted run `31312862775` passed the resolver, all six component
+  jobs, and the aggregate gate through the generic dispatcher.
 - Aligned the getting-started and local-setup clone examples with the
   copy-safe README owner/repository placeholders.
 - Replaced angle-bracket `git clone` and `cd` placeholders in the root README

@@ -7,6 +7,9 @@
 **PR:** #1
 **Bootstrap commit:** `51a9a78`
 **Component workflow activation commit:** `0d92819`
+**P0 revalidation commits:** `4176c4f`, `d10097e`
+**Successful hosted run:**
+[31312862775](https://github.com/setiyadinamikaintegrasi/media-belajar-anak/actions/runs/31312862775)
 
 ## Execution record
 
@@ -125,9 +128,12 @@ The branch now synchronizes the corrected P0 runtime from template commit
 - backend tests that exercise greeting, writer, and executable output behavior
   at 80% measured coverage.
 
-Hosted-runner results remain pending until this patch is pushed. Success requires
-the generic `ci` workflow alone to materialize resolver, quality, test, build,
-and aggregate component jobs.
+The generic `ci` workflow successfully materialized the resolver, backend and
+frontend quality/test/build jobs, and aggregate job without a consumer-owned
+caller. All component jobs passed. The same PR revision also passed CodeQL,
+gitleaks, OSV Scanner, actionlint, zizmor, metadata, documentation, and the
+production-readiness contract. Single-stack jobs skipped as designed because
+the repository declares a version-2 monorepo.
 
 ## Findings
 
@@ -164,8 +170,9 @@ But the `Component-aware monorepo CI` job was absent from the `ci` workflow.
 A direct consumer caller workflow was required to exercise `ci-monorepo.yml`.
 The template dispatcher activation should be reviewed upstream.
 
-**Resolution:** upstream concurrency isolation is included in the pending
-hosted-runner revalidation.
+**Resolution:** fixed by upstream concurrency isolation. Hosted run
+`31312862775` materialized and passed the resolver, six component jobs, and
+aggregate job through the generic dispatcher alone.
 
 ### Finding 3 — Go component workflow assumes golangci-lint is preinstalled
 
@@ -212,7 +219,8 @@ remain blocking.
 
 ## Verdict
 
-The initial run proved the v2 resolver and build boundaries but exposed five
-adoption gaps. Local fixes are now present; the verdict remains provisional
-until the generic dispatcher passes the hosted-runner revalidation without the
-temporary caller.
+The P0 template fixes are validated on a real Go and Node.js consumer monorepo.
+The generic dispatcher now activates the complete component-aware CI path
+without a workaround, all required component jobs pass, and the original five
+adoption gaps are closed for this pilot. Deployment and real-model evaluation
+remain consumer-owned skeletons by design and were not validated here.
