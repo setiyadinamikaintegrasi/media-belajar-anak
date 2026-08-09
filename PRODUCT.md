@@ -1,102 +1,40 @@
-# PRODUCT.md
+# Media Belajar Anak
 
-**Status:** Template baseline — adapt to your project.
+**Status:** Discovery baseline — target usia dan kurikulum akan dikonfirmasi sebelum implementasi fitur utama.
 
-`PRODUCT.md` defines **why** this product exists. It is the highest-level source of truth after security/legal/compliance requirements and approved business requirements.
+## Vision
 
-## Product vision
+Media belajar digital yang aman, menyenangkan, dan mudah digunakan anak bersama pendampingnya.
 
-A reusable, stack-agnostic GitHub template that lets teams and AI coding agents ship AI-native applications to a consistent, governed, production-grade standard — without locking in a language, framework, or platform.
+## Problem
 
-## Business problem
+Materi belajar anak sering tersebar, tidak terstruktur, dan kurang memberikan umpan balik yang sesuai kemampuan anak. Project ini menguji kemampuan template-ai-native untuk mengelola produk edukasi dengan batasan keamanan, konten, dan pengalaman pengguna yang jelas.
 
-Teams building AI-native applications repeatedly reinvent governance: documentation discipline, agent operating rules, quality gates, security controls, supply-chain protections, AI evaluation, CI/CD, observability, and rollback. Without a shared baseline, quality and security drift, AI agents make speculative changes, and production deployments lack human control.
+## Target pengguna awal
 
-## Target users
+- Anak sebagai pengguna utama.
+- Orang tua/guru sebagai pendamping dan pengelola progres.
 
-- Engineering teams starting a new AI-native application.
-- AI coding agents (Claude Code, Copilot, Cursor, Codex) operating on the codebase.
-- Platform/security engineers enforcing organizational standards.
-- Technical leads accountable for production readiness and auditability.
+## Kandidat MVP
 
-## Stakeholder groups
+- Katalog materi belajar berdasarkan topik dan tingkat kesulitan.
+- Materi interaktif berbasis teks, gambar, dan audio.
+- Latihan/kuis dengan umpan balik langsung.
+- Progress belajar per anak.
+- Kontrol pendamping untuk memilih materi.
+- Desain mobile-first dan aksesibel.
 
-- Product owners (business outcomes).
-- Engineering (delivery).
-- Security and compliance (risk).
-- Operations/SRE (reliability).
-- AI/ML evaluation (model behavior and cost).
+## Out of scope awal
 
-## User needs
+- Iklan pihak ketiga.
+- Chat terbuka antara anak dan pengguna lain.
+- Pengumpulan data pribadi anak tanpa persetujuan pendamping.
+- Personalisasi berbasis AI sebelum safety dan evaluasinya disetujui.
 
-- "I can start a new AI-native project with governance already in place."
-- "My AI coding agent understands its boundaries and follows a disciplined workflow."
-- "Pull requests receive deterministic checks plus AI-assisted review."
-- "Production deployments are human-gated and reversible."
-- "AI behavior is evaluated before release."
+## Success criteria eksperimen template
 
-## Primary journeys
-
-1. **Start a project** — use the template → adopt a stack → wire CI → first deploy to dev.
-2. **Ship a feature** — design doc → PR → quality + security + AI gates → review → merge → dev deploy → staging → production (human-gated).
-3. **Evaluate AI behavior** — add prompt/eval → run regression + safety evals → gate release.
-4. **Recover** — detect incident → runbook → rollback → postmortem.
-
-## Business value
-
-- Faster, safer starts for AI-native projects.
-- Reduced security and supply-chain risk.
-- Consistent, auditable engineering standards across teams.
-- Controlled, human-gated production changes.
-- Measurable AI quality and cost.
-
-## Product principles
-
-- Business-first engineering.
-- Document-driven development.
-- Design before implementation.
-- Small-context, reversible increments.
-- Evidence before completion.
-- Human-controlled production.
-- Simplicity first; surgical changes; goal-driven execution.
-
-## Success metrics
-
-- Time from "use template" to first dev deploy.
-- PR check coverage (deterministic + AI-assisted).
-- Critical/high security findings in `main`: zero.
-- AI evaluation pass rate on release.
-- Mean time to recover (MTTR) from incidents.
-- Committed secrets: zero.
-
-## Scope
-
-- Governance, documentation, agent instructions, CI/CD workflows, security controls, AI scaffolding, observability guidance, operational readiness docs.
-
-## Out of scope
-
-- A committed language/framework/runtime.
-- A concrete deployment target (AWS/GCP/K8s) with working deploy steps.
-- A working model-provider adapter (skeleton only; consumer wires the endpoint).
-- DAST, performance-test, canary, and DR-validation automation (deferred; need a target).
-
-## Roadmap
-
-- **Phase 1** — Repository governance (baseline complete).
-- **Phase 2** — Code-quality baseline (baseline complete).
-- **Phase 3** — Security baseline (baseline complete).
-- **Phase 4** — AI-native capability (baseline complete; consumer evaluation remains advisory).
-- **Phase 5** — Delivery pipeline (baseline complete; deploy and smoke workflows remain skeletons).
-- **Phase 6** — Production readiness (baseline complete; consumer platform activation remains deferred).
-
-## Assumptions
-
-See [docs/assumptions.md](docs/assumptions.md) and the spec's assumptions section. Key: stack-agnostic (no tooling runs until a stack is wired); no real deployment target; AI-eval is a skeleton; branch protection is applied by the consumer via `scripts/setup-branch-protection.sh`.
-
-## Constraints
-
-- No language/framework committed.
-- MIT license for the template.
-- No production target.
-- All Make targets no-op cleanly until a stack is wired.
-- Workflows follow least-privilege, SHA-pinned-Actions security rules.
+1. Project berhasil dibuat dari GitHub Use this template.
+2. Monorepo v2 berjalan tanpa symlink.
+3. Backend dan frontend memiliki component checks sendiri.
+4. `make setup`, `make test-scripts`, `make docs-check`, dan `make ci` berhasil.
+5. PR bootstrap menjalankan reusable component workflow dari branch dasar.
