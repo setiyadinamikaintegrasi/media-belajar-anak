@@ -61,6 +61,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AI-native scaffolding: `prompts/registry.yaml` (2 examples), `prompts/schemas/`, `evals/` framework README + subdirs, `tests/`, and consumer-owned `src/`, `infrastructure/`, `deployment/`, `observability/` with READMEs.
 
 ### Fixed
+- Synced the template P0 monorepo runtime fixes, removed the temporary component
+  caller, made empty optional Node.js categories skip explicitly, installed the
+  pinned Go linter in CI, and added behavioral backend coverage at the unchanged
+  80% threshold for hosted-runner revalidation.
 - Aligned the getting-started and local-setup clone examples with the
   copy-safe README owner/repository placeholders.
 - Replaced angle-bracket `git clone` and `cd` placeholders in the root README

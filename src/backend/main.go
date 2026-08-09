@@ -1,11 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+	"os"
+)
 
 func Greeting() string {
 	return "Media Belajar Anak API"
 }
 
+func run(output io.Writer) error {
+	_, err := fmt.Fprintln(output, Greeting())
+	return err
+}
+
 func main() {
-	fmt.Println(Greeting())
+	if err := run(os.Stdout); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
 }

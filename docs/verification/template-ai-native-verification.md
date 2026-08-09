@@ -75,7 +75,7 @@ No symlink was used.
 
 ## Pull request verification
 
-PR #1: https://github.com/setiyadinamikaintegrasi/media-belajar-anak/pull/1
+PR: [#1 — bootstrap media belajar anak monorepo](https://github.com/setiyadinamikaintegrasi/media-belajar-anak/pull/1)
 
 ### General template checks
 
@@ -83,7 +83,6 @@ Passed:
 
 - Detect stack
 - PR Title Check
-- Markdown lint/link/TODO check
 - Required docs and metadata
 - Production readiness contract
 - gitleaks
@@ -96,10 +95,15 @@ Passed:
 - License policy
 - AI evaluation advisory workflow
 
+Failed on the initial run:
+
+- Markdown lint: bare URL in this verification document.
+- Generic dispatcher: reusable component jobs did not materialize.
+
 ### Component-aware workflow
 
-The generic `ci.yml` reported `component_ready=true` but did not create the
-component job. A consumer-owned caller workflow was added:
+The initial generic `ci.yml` run reported `component_ready=true` but did not
+create the component job. A temporary consumer-owned caller workflow was added:
 
 ```text
 .github/workflows/media-belajar-components.yml
@@ -107,6 +111,23 @@ component job. A consumer-owned caller workflow was added:
 
 After that direct activation, the reusable component workflow ran successfully
 through resolver and build stages.
+
+### P0 template revalidation
+
+The branch now synchronizes the corrected P0 runtime from template commit
+`88b3c5f` and removes the temporary caller. The revalidation patch includes:
+
+- isolated reusable-workflow concurrency groups;
+- deterministic `golangci-lint` v2.12.2 setup;
+- explicit skip behavior for empty optional Node.js integration/e2e categories;
+- fail-closed, visible 80% Go coverage enforcement;
+- the dedicated initializer README fixture; and
+- backend tests that exercise greeting, writer, and executable output behavior
+  at 80% measured coverage.
+
+Hosted-runner results remain pending until this patch is pushed. Success requires
+the generic `ci` workflow alone to materialize resolver, quality, test, build,
+and aggregate component jobs.
 
 ## Findings
 
@@ -126,6 +147,9 @@ Consumer-side normalization was added so the test reconstructs a marker-only
 fixture before testing the initializer. This should be upstreamed to the
 original template.
 
+**Resolution:** replaced by the dedicated upstream fixture during P0
+revalidation.
+
 ### Finding 2 — generic dispatcher does not activate component job
 
 GitHub log showed:
@@ -140,6 +164,9 @@ But the `Component-aware monorepo CI` job was absent from the `ci` workflow.
 A direct consumer caller workflow was required to exercise `ci-monorepo.yml`.
 The template dispatcher activation should be reviewed upstream.
 
+**Resolution:** upstream concurrency isolation is included in the pending
+hosted-runner revalidation.
+
 ### Finding 3 — Go component workflow assumes golangci-lint is preinstalled
 
 Backend quality failed on GitHub:
@@ -151,6 +178,8 @@ sh: 1: golangci-lint: not found
 `ci-monorepo.yml` invokes `golangci-lint run`, but does not install or set up
 `golangci-lint`. A fresh Go component cannot pass quality checks zero-config.
 The template should pin/install the linter or document the requirement.
+
+**Resolution:** the SHA-pinned upstream installer is included in revalidation.
 
 ### Finding 4 — Go coverage gate is strict for bootstrap components
 
@@ -164,6 +193,9 @@ Go coverage 50.0% < 80%
 The 80% threshold is reasonable for production, but the template should provide
 a documented bootstrap path or fixture with sufficient coverage.
 
+**Resolution:** the 80% gate remains unchanged; the backend now meets it with
+behavioral tests and the threshold is printed in CI.
+
 ### Finding 5 — frontend integration/e2e directories must contain tests
 
 Frontend unit test passed, but the reusable workflow failed at integration test:
@@ -175,9 +207,12 @@ No test files found, exiting with code 1
 The Node mapper should either no-op empty test categories or the getting-started
 guide should require placeholder tests in every test directory.
 
+**Resolution:** optional empty categories now skip explicitly; real failures
+remain blocking.
+
 ## Verdict
 
-The template is strong for governance and security controls. The v2 monorepo
-contract resolves and builds correctly, but the first real GitHub component run
-exposed four adoption gaps around dispatcher activation, Go linter setup,
-bootstrap coverage, and empty Node test categories.
+The initial run proved the v2 resolver and build boundaries but exposed five
+adoption gaps. Local fixes are now present; the verdict remains provisional
+until the generic dispatcher passes the hosted-runner revalidation without the
+temporary caller.
