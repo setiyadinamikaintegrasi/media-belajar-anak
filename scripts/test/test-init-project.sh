@@ -15,6 +15,24 @@ WORK="$(mktemp -d "${TMPDIR:-/tmp}/template-ai-native-init.XXXXXX")"
 trap 'rm -rf "$WORK"' EXIT HUP INT TERM
 
 cp "$ROOT/README.md" "$WORK/README.md"
+# Consumer repositories already have a generated identity block. Normalize the
+# copied fixture back to the template marker-only baseline before testing the
+# initializer contract.
+awk '
+  /<!-- template-ai-native:project-identity:generated -->/ { next }
+  /<!-- template-ai-native:project-identity:start -->/ {
+    print
+    in_identity=1
+    next
+  }
+  /<!-- template-ai-native:project-identity:end -->/ {
+    print
+    in_identity=0
+    next
+  }
+  !in_identity { print }
+' "$WORK/README.md" > "$WORK/README.normalized.md"
+mv "$WORK/README.normalized.md" "$WORK/README.md"
 
 if [ -x "$ROOT/scripts/init-project.sh" ]; then
   PASS=$((PASS+1))
