@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"os"
 	"testing"
@@ -32,8 +33,12 @@ func TestMainWritesGreeting(t *testing.T) {
 	os.Stdout = writer
 	t.Cleanup(func() {
 		os.Stdout = original
-		reader.Close()
-		writer.Close()
+		if err := reader.Close(); err != nil && !errors.Is(err, os.ErrClosed) {
+			t.Errorf("reader.Close() cleanup error = %v", err)
+		}
+		if err := writer.Close(); err != nil && !errors.Is(err, os.ErrClosed) {
+			t.Errorf("writer.Close() cleanup error = %v", err)
+		}
 	})
 
 	main()
